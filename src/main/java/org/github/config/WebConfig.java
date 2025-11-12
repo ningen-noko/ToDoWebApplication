@@ -10,7 +10,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
 @Configuration
-@EnableWebMvc
+@EnableWebMvc // включает всю магию dispatcher servlet
 @ComponentScan("org.github")
 public class WebConfig implements WebMvcConfigurer {
 

@@ -1,46 +1,49 @@
-// DAO (Data Access Object) -- этот класс будет работать с данными
-// Обычно данные берут с бд, в нашем случае данные будут хранить в этом классе
-
 package org.github.dao;
 
 import org.github.entity.Record;
 import org.github.entity.RecordStatus;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
 public class RecordDao {
-    private final List<Record> records = new ArrayList<>(
-            Arrays.asList(
-                    new Record("Take a shower", RecordStatus.ACTIVE),
-                    new Record("Buy flowers", RecordStatus.DONE),
-                    new Record("Go to the gym", RecordStatus.ACTIVE)
-            )
-    );
 
-    // Не возвращаем ссылку на оргинальный обьект
+    @PersistenceContext
+    private EntityManager entityManager;
+
     public List<Record> findAllRecords() {
-        return new ArrayList<>(records);
+        Query query = entityManager.createQuery("SELECT r FROM Record r ORDER BY r.id ASC");
+        List<Record> records = query.getResultList();
+
+        return records;
     }
 
     public void saveRecord(Record record) {
-        records.add(record);
+        entityManager.persist(record);
     }
 
     public void updateRecordStatus(int id, RecordStatus status) {
-        for (Record record : records) {
-            if(record.getId() == id) {
-                record.setStatus(status);
-                break;
-            }
-        }
+//            единственный недостаток это выполнкние не нужного select запроса
+//            Record record = entityManager.find(Record.class, id);
+//            record.setStatus(status);
+//            entityManager.merge(record);
+
+//            второй способо более оптимизированный
+        Query query = entityManager.createQuery("UPDATE Record SET status = :status WHERE id = :id");
+        query.setParameter("status", status);
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 
     public void deleteRecord(int id) {
-        // removeIf удаляет все записи с аргументом title
-        records.removeIf(item -> item.getId() == id);
+        // Уменьшение загрузки на бд, вместо двух запросов select и delete
+        Query query = entityManager.createQuery("DELETE FROM Record WHERE id = :id");
+        query.setParameter("id", id);
+        query.executeUpdate();
     }
 }

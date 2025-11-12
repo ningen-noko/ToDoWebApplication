@@ -4,7 +4,7 @@
   <groupId>org.github</groupId>
   <artifactId>to-do-list-web-application</artifactId>
   <packaging>war</packaging>
-  <version>0.0.1</version>
+  <version>0.0.2</version>
   <name>ToDo List Web Application</name>
 
     <properties>
@@ -13,9 +13,15 @@
         <spring.version>5.3.29</spring.version>
         <servlet.version>4.0.1</servlet.version>
         <jstl.version>1.2</jstl.version>
+        <spring.version>5.3.29</spring.version>
+        <postgresql.version>42.6.0</postgresql.version>
+        <hibernate.version>5.6.15.Final</hibernate.version>
+        <javax.version>2.2</javax.version>
+        <dbcp.version>2.9.0</dbcp.version>
     </properties>
 
   <dependencies>
+      <!-- WEB -->
       <!-- https://mvnrepository.com/artifact/org.springframework/spring-webmvc -->
       <dependency>
           <groupId>org.springframework</groupId>
@@ -36,6 +42,38 @@
           <groupId>javax.servlet</groupId>
           <artifactId>jstl</artifactId>
           <version>${jstl.version}</version>
+      </dependency>
+
+      <!-- DB -->
+
+      <dependency>
+          <groupId>org.springframework</groupId>
+          <artifactId>spring-orm</artifactId>
+          <version>${spring.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.postgresql</groupId>
+          <artifactId>postgresql</artifactId>
+          <version>${postgresql.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.hibernate</groupId>
+          <artifactId>hibernate-core</artifactId>
+          <version>${hibernate.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>javax.persistence</groupId>
+          <artifactId>javax.persistence-api</artifactId>
+          <version>${javax.version}</version>
+      </dependency>
+
+      <dependency>
+          <groupId>org.apache.commons</groupId>
+          <artifactId>commons-dbcp2</artifactId>
+          <version>${dbcp.version}</version>
       </dependency>
   </dependencies>
   <build>
